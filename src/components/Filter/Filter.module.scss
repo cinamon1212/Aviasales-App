@@ -1,0 +1,45 @@
+$white-color: white;
+
+.filter {
+  display: flex;
+  height: 50px;
+  width: 100%;
+
+  &__item {
+    text-transform: uppercase;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+
+    height: 50px;
+    width: 170px;
+    background-color: $white-color;
+    border-radius: 0;
+
+    padding: 0;
+    margin: 0;
+    border: 1px solid #dfe5ec;
+
+    &--first {
+      border-radius: 10px 0 0 10px;
+      border-right: none;
+    }
+
+    &--last {
+      border-radius: 0 10px 10px 0;
+      border-left: none;
+    }
+
+    &--active {
+      background-color: #2196f3;
+      color: $white-color;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
