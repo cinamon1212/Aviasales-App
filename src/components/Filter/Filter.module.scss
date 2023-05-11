@@ -15,23 +15,13 @@ $white-color: white;
     letter-spacing: 0.5px;
 
     height: 50px;
-    width: 170px;
+    width: 50%;
     background-color: $white-color;
     border-radius: 0;
 
     padding: 0;
     margin: 0;
     border: 1px solid #dfe5ec;
-
-    &--first {
-      border-radius: 10px 0 0 10px;
-      border-right: none;
-    }
-
-    &--last {
-      border-radius: 0 10px 10px 0;
-      border-left: none;
-    }
 
     &--active {
       background-color: #2196f3;
@@ -40,6 +30,16 @@ $white-color: white;
 
     &:hover {
       cursor: pointer;
+    }
+
+    &:first-child {
+      border-radius: 10px 0 0 10px;
+      border-right: none;
+    }
+
+    &:last-child {
+      border-radius: 0 10px 10px 0;
+      border-left: none;
     }
   }
 }

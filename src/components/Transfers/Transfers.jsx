@@ -9,14 +9,29 @@ export function Transfers() {
 
   const checkedArray = useSelector((state) => state.transferReducer.checked);
 
-  const checkedChange = (e, checkedArr) => {
-    checkedArr.forEach((element) => {
-      console.log(Object.keys(element)[0]);
-    });
-    const checkbox = e.currentTarget.childNodes[2].textContent;
-    const checkboxStatus = e.currentTarget.childNodes[0].checked;
+  const selectAllCheckbox = () => {
+    const allLabel = document.querySelectorAll(`.${classes['transfers__text']}`);
 
-    dispatch(changeCheckbox({ [checkbox]: checkboxStatus }));
+    let resArray = [];
+
+    allLabel.forEach((elem) => {
+      resArray.push(elem.textContent);
+    });
+
+    dispatch(changeCheckbox(resArray));
+  };
+
+  const checkedChange = (e, checkedArr) => {
+    const checkbox = e.currentTarget.childNodes[2].textContent;
+
+    if (checkedArr.length === 5 && checkbox === 'Все') dispatch(changeCheckbox([]));
+    else if (checkedArr.length === 5) {
+      const copy = [...checkedArr];
+      const res = copy.filter((elem) => elem !== checkbox && elem !== 'Все');
+      dispatch(changeCheckbox(res));
+    } else if (checkbox === 'Все') selectAllCheckbox();
+    else if (checkedArr.length >= 3 && !checkedArr.includes(checkbox)) selectAllCheckbox();
+    else dispatch(changeCheckbox(checkbox));
   };
 
   const labelTextArray = ['Все', 'Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
@@ -26,14 +41,13 @@ export function Transfers() {
       <h2 className={classes['transfers__title']}>количество пересадок</h2>
       <ul className={classes['transfers__list']}>
         {labelTextArray.map((text, i) => {
-          // if (checkedArray.length && text in checkedArray[i]) {
-          //   console.log('yes');
-          // }
+          let checkedStatus = false;
+          if (checkedArray.includes(text)) checkedStatus = true;
 
           return (
             <li className={classes['transfers__item']} key={i}>
               <label className={classes['transfers__check']} onChange={(e) => checkedChange(e, checkedArray)}>
-                <input type="checkbox" className={classes['transfers__input']} />
+                <input type="checkbox" className={classes['transfers__input']} checked={checkedStatus} readOnly />
                 <span className={classes['transfers__checkbox']} />
                 <span className={classes['transfers__text']}>{text}</span>
               </label>
