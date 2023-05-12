@@ -1,18 +1,13 @@
 import { CHANGE_FILTER } from '../types';
 
 const initialState = {
-  filters: 'Самый дешевый',
+  filters: '',
 };
 
 export const filtersReducer = (state = initialState, action) => {
-  // console.log(action);
-  let result;
-
   switch (action.type) {
     case CHANGE_FILTER:
-      result = { ...state, filters: action.filter };
-
-      return result;
+      return { ...state, filters: action.filter };
 
     default:
       return state;

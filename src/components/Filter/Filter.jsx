@@ -10,11 +10,9 @@ export function Filter() {
   const onFilterClick = (e) => {
     const classActiveButton = `${classes['filter__item--active']}`;
     const lastActiveItem = document.querySelector(`.${classActiveButton}`);
-
-    lastActiveItem.classList.remove(`${classActiveButton}`);
+    if (lastActiveItem) lastActiveItem.classList.remove(`${classActiveButton}`);
     e.target.classList.add(`${classActiveButton}`);
-
-    dispatch(changeFilter(e.target.textContent));
+    if (lastActiveItem !== e.target || !lastActiveItem) dispatch(changeFilter(e.target.textContent));
   };
 
   // const res = useSelector((state) => state.filtersReducer.filters);
@@ -22,7 +20,7 @@ export function Filter() {
 
   return (
     <div className={classes.filter}>
-      <button className={`${classes['filter__item']}  ${classes['filter__item--active']}`} onClick={onFilterClick}>
+      <button className={`${classes['filter__item']}`} onClick={onFilterClick}>
         Самый дешевый
       </button>
       <button className={`${classes['filter__item']}`} onClick={onFilterClick}>

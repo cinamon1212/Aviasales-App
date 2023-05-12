@@ -28,13 +28,14 @@ $white-color: white;
       color: $white-color;
     }
 
-    &:hover {
+    &:not(.filter__item--active):hover {
       cursor: pointer;
+      background-color: #a0b0b9;
     }
 
     &:first-child {
       border-radius: 10px 0 0 10px;
-      border-right: none;
+      // border-right: none;
     }
 
     &:last-child {

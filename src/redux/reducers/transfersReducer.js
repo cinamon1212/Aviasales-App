@@ -12,9 +12,8 @@ export const transferReducer = (state = initialState, action) => {
     case CHANGE_CHECKBOX:
       if (Array.isArray(action.checked)) resState = { ...state, checked: action.checked };
       else {
-        if (!state.checked.length) {
-          resState = { ...state, checked: [action.checked] };
-        } else {
+        if (!state.checked.length) resState = { ...state, checked: [action.checked] };
+        else {
           state.checked.forEach((elem) => {
             if (elem === action.checked) {
               isNewElemNeedToBeAdd = false;

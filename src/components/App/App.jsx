@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getAsyncSearchId, setNewFiveTickets } from '../../redux/actions';
+import { getAsyncSearchId, setNewFiveTickets, getAsyncTickets } from '../../redux/actions';
 import { Transfers } from '../Transfers/Transfers';
 import { Filter } from '../Filter/Filter';
 import { TicketList } from '../TicketsLIst/TicketsLIst';
@@ -17,12 +17,38 @@ export function App() {
 
   useEffect(() => {
     dispatch(getAsyncSearchId);
-    dispatch(setNewFiveTickets(allTickets));
   }, [getAsyncSearchId]);
+
+  const searchId = useSelector((state) => state.setSearchIdReducer.searchId);
+
+  useEffect(() => {
+    if (searchId) {
+      // dispatch(setLoaderStatus(true));
+      dispatch(getAsyncTickets(searchId));
+    }
+  }, [searchId]);
 
   useEffect(() => {
     dispatch(setNewFiveTickets(ticketsPart));
-  }, [allTickets]);
+  }, [ticketsPart.length]);
+
+  const transfers = useSelector((state) => state.transferReducer.checked);
+
+  const list = (
+    <>
+      <TicketList />
+      <ShowMoreTickets />
+    </>
+  );
+  const content = (
+    <>
+      {transfers.length ? (
+        list
+      ) : (
+        <h2 className={classes['not-found']}>Рейсов, подходящих под заданные фильтры, не найдено...</h2>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -31,8 +57,7 @@ export function App() {
         <Transfers />
         <main className={classes.main}>
           <Filter />
-          <TicketList />
-          <ShowMoreTickets />
+          {content}
         </main>
       </div>
     </>

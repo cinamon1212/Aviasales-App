@@ -1,7 +1,7 @@
 export const sortAllTickets = (tickets, filter, transfers) => {
   if (filter === 'Самый дешевый') {
     tickets = tickets.sort((a, b) => (a.price > b.price ? 1 : -1));
-  } else {
+  } else if (filter === 'Самый быстрый') {
     tickets = tickets.sort((a, b) =>
       a.segments[0].duration + a.segments[1].duration > b.segments[0].duration + b.segments[1].duration ? 1 : -1,
     );
