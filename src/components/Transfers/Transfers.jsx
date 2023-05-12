@@ -9,18 +9,6 @@ export function Transfers() {
 
   const checkedArray = useSelector((state) => state.transferReducer.checked);
 
-  const selectAllCheckbox = () => {
-    const allLabel = document.querySelectorAll(`.${classes['transfers__text']}`);
-
-    let resArray = [];
-
-    allLabel.forEach((elem) => {
-      resArray.push(elem.textContent);
-    });
-
-    dispatch(changeCheckbox(resArray));
-  };
-
   const checkedChange = (e, checkedArr) => {
     const checkbox = e.currentTarget.childNodes[2].textContent;
 
@@ -29,8 +17,8 @@ export function Transfers() {
       const copy = [...checkedArr];
       const res = copy.filter((elem) => elem !== checkbox && elem !== 'Все');
       dispatch(changeCheckbox(res));
-    } else if (checkbox === 'Все') selectAllCheckbox();
-    else if (checkedArr.length >= 3 && !checkedArr.includes(checkbox)) selectAllCheckbox();
+    } else if (checkbox === 'Все') dispatch(changeCheckbox(labelTextArray));
+    else if (checkedArr.length >= 3 && !checkedArr.includes(checkbox)) dispatch(changeCheckbox(labelTextArray));
     else dispatch(changeCheckbox(checkbox));
   };
 
