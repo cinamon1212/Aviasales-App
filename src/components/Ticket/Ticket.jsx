@@ -27,6 +27,21 @@ export function Ticket({ price, segments, carrier }) {
     duration: secondDuration,
   } = filterTicketSegmentPart(secondSegment);
 
+  const createTicketColumn = (ticketHeadFirst, ticketTextFirst, ticketHeadSecond, ticketTextSecond) => {
+    return (
+      <div className={classes['ticket__column']}>
+        <div className={classes['ticket__arrive']}>
+          <span className={classes['ticket__head']}>{ticketHeadFirst}</span>
+          <span className={classes['ticket__text']}>{ticketTextFirst}</span>
+        </div>
+        <div className={classes['ticket__arrive']}>
+          <span className={classes['ticket__head']}>{ticketHeadSecond}</span>
+          <span className={classes['ticket__text']}>{ticketTextSecond}</span>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className={classes['ticket']}>
       <div className={classes['ticket__title']}>
@@ -36,36 +51,11 @@ export function Ticket({ price, segments, carrier }) {
         </div>
       </div>
       <div className={classes['ticket__flight-schedule']}>
-        <div className={classes['ticket__column']}>
-          <div className={classes['ticket__arrive']}>
-            <span className={classes['ticket__head']}>{firstDestination}</span>
-            <span className={classes['ticket__text']}>{firstDateSchedule}</span>
-          </div>
-          <div className={classes['ticket__arrive']}>
-            <span className={classes['ticket__head']}>{secondDestination}</span>
-            <span className={classes['ticket__text']}>{secondDateSchedule}</span>
-          </div>
-        </div>
-        <div className={classes['ticket__column']}>
-          <div className={classes['ticket__arrive']}>
-            <span className={classes['ticket__head']}>в пути</span>
-            <span className={classes['ticket__text']}>{firstDuration}</span>
-          </div>
-          <div className={classes['ticket__arrive']}>
-            <span className={classes['ticket__head']}>в пути</span>
-            <span className={classes['ticket__text']}>{secondDuration}</span>
-          </div>
-        </div>
-        <div className={classes['ticket__column']}>
-          <div className={classes['ticket__arrive']}>
-            <span className={classes['ticket__head']}>{firstCountTransfers}</span>
-            <span className={classes['ticket__text']}>{firstTransfers}</span>
-          </div>
-          <div className={classes['ticket__arrive']}>
-            <span className={classes['ticket__head']}>{secondCountTransfers}</span>
-            <span className={classes['ticket__text']}>{secondTransfers}</span>
-          </div>
-        </div>
+        {createTicketColumn(firstDestination, firstDateSchedule, secondDestination, secondDateSchedule)}
+
+        {createTicketColumn('в пути', firstDuration, 'в пути', secondDuration)}
+
+        {createTicketColumn(firstCountTransfers, firstTransfers, secondCountTransfers, secondTransfers)}
       </div>
     </div>
   );

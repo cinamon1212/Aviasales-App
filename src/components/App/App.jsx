@@ -1,38 +1,34 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { getAsyncSearchId, setNewFiveTickets, getAsyncTickets } from '../../redux/actions';
 import { Transfers } from '../Transfers/Transfers';
 import { Filter } from '../Filter/Filter';
 import { TicketList } from '../TicketsLIst/TicketsLIst';
 import { ShowMoreTickets } from '../ShowMoreTickets/ShowMoreTickets';
+import { useActions } from '../../hooks/useActions';
 
 import classes from './App.module.scss';
 
 export function App() {
-  const dispatch = useDispatch();
+  const { setNewFiveTickets, getAllTickets, getSearchId } = useActions();
 
-  const allTickets = useSelector((state) => state.setAllTicketsReducer.tickets);
+  const allTickets = useSelector((state) => state.allTicketsReducer.allTickets);
+  const transfers = useSelector((state) => state.transfersReducer);
+  const searchId = useSelector((state) => state.searchIdReducer.searchId);
+
   const ticketsPart = allTickets.slice(0, 5);
 
   useEffect(() => {
-    dispatch(getAsyncSearchId);
-  }, [getAsyncSearchId]);
-
-  const searchId = useSelector((state) => state.setSearchIdReducer.searchId);
+    getSearchId();
+  }, [getSearchId]);
 
   useEffect(() => {
-    if (searchId) {
-      // dispatch(setLoaderStatus(true));
-      dispatch(getAsyncTickets(searchId));
-    }
+    if (searchId) getAllTickets(searchId);
   }, [searchId]);
 
   useEffect(() => {
-    dispatch(setNewFiveTickets(ticketsPart));
+    setNewFiveTickets(ticketsPart);
   }, [ticketsPart.length]);
-
-  const transfers = useSelector((state) => state.transferReducer.checked);
 
   const list = (
     <>
@@ -40,9 +36,10 @@ export function App() {
       <ShowMoreTickets />
     </>
   );
+
   const content = (
     <>
-      {transfers.length ? (
+      {transfers && transfers.length ? (
         list
       ) : (
         <h2 className={classes['not-found']}>Рейсов, подходящих под заданные фильтры, не найдено...</h2>

@@ -1,45 +1,28 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
-import { setNewFiveTickets } from '../../redux/actions';
+import { Loader } from '../Loader/Loader';
+import { useActions } from '../../hooks/useActions';
 import { sortAllTickets } from '../../helpers/sortAllTickets';
 import { Ticket } from '../Ticket/Ticket';
 
-const antIcon = (
-  <LoadingOutlined
-    style={{
-      fontSize: 30,
-      margin: 0,
-    }}
-    spin
-  />
-);
-
 export function TicketList() {
-  const dispatch = useDispatch();
+  const { setNewFiveTickets } = useActions();
 
-  const allTickets = useSelector((state) => state.setAllTicketsReducer.tickets);
-
-  const ticketsFilter = useSelector((state) => state.filtersReducer.filters);
-
-  const transfers = useSelector((state) => state.transferReducer.checked);
-
-  const pageTickets = useSelector((state) => state.setPageTicketsReducer.fiveTickets);
-
-  const loader = useSelector((state) => state.setAllTicketsReducer.loaderStatus);
-
-  const pageLoader = loader ? <Spin indicator={antIcon} /> : null;
+  const allTickets = useSelector((state) => state.allTicketsReducer.allTickets);
+  const ticketsFilter = useSelector((state) => state.filtersReducer);
+  const transfers = useSelector((state) => state.transfersReducer);
+  transfers;
+  const pageTickets = useSelector((state) => state.pageTicketsReducer);
+  const loader = useSelector((state) => state.allTicketsReducer.isLoading);
+  const pageLoader = loader ? <Loader /> : null;
 
   useEffect(() => {
     const sortedTickets = sortAllTickets(allTickets, ticketsFilter, transfers);
-    console.log(sortedTickets);
-    const partTickets = sortedTickets.slice(0, pageTickets.length);
-    dispatch(setNewFiveTickets(partTickets));
-  }, [ticketsFilter, transfers.length]);
 
-  //   }, [ticketsFilter, transfers.length, pageTickets.length]);
+    const partTickets = sortedTickets.slice(0, pageTickets.length);
+    setNewFiveTickets(partTickets);
+  }, [ticketsFilter, transfers.length, pageTickets.length]);
 
   if (pageTickets.length)
     return (

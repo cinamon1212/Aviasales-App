@@ -1,25 +1,31 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { changeCheckbox } from '../../redux/actions';
+import { useActions } from '../../hooks/useActions';
+// import { changeCheckbox } from '../../redux/actions';
+// import { transfersActions } from '../../store/slices/transfersSlice';
 
 import classes from './Transfers.module.scss';
 
 export function Transfers() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const checkedArray = useSelector((state) => state.transferReducer.checked);
+  const { changeTransfersCheckbox } = useActions();
+
+  const checkedArray = useSelector((state) => state.transfersReducer);
 
   const checkedChange = (e, checkedArr) => {
     const checkbox = e.currentTarget.childNodes[2].textContent;
+    let resArray;
 
-    if (checkedArr.length === 5 && checkbox === 'Все') dispatch(changeCheckbox([]));
+    if (checkedArr.length === 5 && checkbox === 'Все') resArray = [];
     else if (checkedArr.length === 5) {
       const copy = [...checkedArr];
-      const res = copy.filter((elem) => elem !== checkbox && elem !== 'Все');
-      dispatch(changeCheckbox(res));
-    } else if (checkbox === 'Все') dispatch(changeCheckbox(labelTextArray));
-    else if (checkedArr.length >= 3 && !checkedArr.includes(checkbox)) dispatch(changeCheckbox(labelTextArray));
-    else dispatch(changeCheckbox(checkbox));
+      resArray = copy.filter((elem) => elem !== checkbox && elem !== 'Все');
+    } else if (checkbox === 'Все') resArray = [...labelTextArray];
+    else if (checkedArr.length >= 3 && !checkedArr.includes(checkbox)) resArray = [...labelTextArray];
+    else resArray = checkbox;
+
+    changeTransfersCheckbox(resArray);
   };
 
   const labelTextArray = ['Все', 'Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
@@ -30,7 +36,7 @@ export function Transfers() {
       <ul className={classes['transfers__list']}>
         {labelTextArray.map((text, i) => {
           let checkedStatus = false;
-          if (checkedArray.includes(text)) checkedStatus = true;
+          if (checkedArray && checkedArray.includes(text)) checkedStatus = true;
 
           return (
             <li className={classes['transfers__item']} key={i}>

@@ -1,17 +1,18 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { addFiveTickets } from '../../redux/actions';
+import { useActions } from '../../hooks/useActions';
 
 import classes from './ShowMoreTickets.module.scss';
 
 export function ShowMoreTickets() {
-  const dispatch = useDispatch();
-  const pageTickets = useSelector((state) => state.setPageTicketsReducer.fiveTickets);
-  const allTickets = useSelector((state) => state.setAllTicketsReducer.tickets);
+  const { addFiveTickets } = useActions();
+
+  const pageTickets = useSelector((state) => state.pageTicketsReducer);
+  const allTickets = useSelector((state) => state.allTicketsReducer.allTickets);
   const addTickets = allTickets.slice(pageTickets.length, pageTickets.length + 5);
 
   const onShowButtonClick = (addTickets) => {
-    dispatch(addFiveTickets(addTickets));
+    addFiveTickets(addTickets);
   };
 
   return (
